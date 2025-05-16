@@ -233,8 +233,8 @@ class PushTEnv(gym.Env):
                         dtype=np.uint8,
                     ),
                     "proprio": spaces.Box(
-                        low=np.array([0, 0]),
-                        high=np.array([512, 512]),
+                        low=np.array([0, 0, -np.inf, -np.inf]),
+                        high=np.array([512, 512, np.inf, np.inf]),
                         dtype=np.float64,
                     ),
                 }
