@@ -1,3 +1,6 @@
+
+pip install git+https://github.com/ian-chuang/gym-pusht.git
+
 # gym-pusht
 
 A gymnasium environment PushT.
