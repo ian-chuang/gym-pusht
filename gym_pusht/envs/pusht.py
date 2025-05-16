@@ -223,6 +223,22 @@ class PushTEnv(gym.Env):
                     ),
                 }
             )
+        elif self.obs_type == "visual_proprio":
+            self.observation_space = spaces.Dict(
+                {
+                    "visual": spaces.Box(
+                        low=0,
+                        high=255,
+                        shape=(self.observation_height, self.observation_width, 3),
+                        dtype=np.uint8,
+                    ),
+                    "proprio": spaces.Box(
+                        low=np.array([0, 0]),
+                        high=np.array([512, 512]),
+                        dtype=np.float64,
+                    ),
+                }
+            )
         else:
             raise ValueError(
                 f"Unknown obs_type {self.obs_type}. Must be one of [pixels, state, environment_state_agent_pos, "
@@ -400,6 +416,14 @@ class PushTEnv(gym.Env):
             return {
                 "pixels": pixels,
                 "agent_pos": np.array(self.agent.position),
+            }
+        elif self.obs_type == "visual_proprio":
+            return {
+                "visual": pixels,
+                "proprio": np.array(
+                    tuple(self.agent.position)
+                    + tuple(self.agent.velocity)
+                )
             }
 
     @staticmethod
