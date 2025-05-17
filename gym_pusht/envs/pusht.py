@@ -138,6 +138,7 @@ class PushTEnv(gym.Env):
         self,
         obs_type="state",
         render_mode="rgb_array",
+        relative=False,
         block_cog=None,
         damping=None,
         observation_width=96,
@@ -148,6 +149,7 @@ class PushTEnv(gym.Env):
         super().__init__()
         # Observations
         self.obs_type = obs_type
+        self.relative = relative
 
         # Rendering
         self.render_mode = render_mode
@@ -158,7 +160,7 @@ class PushTEnv(gym.Env):
 
         # Initialize spaces
         self._initialize_observation_space()
-        self.action_space = spaces.Box(low=0, high=512, shape=(2,), dtype=np.float32)
+        self.action_space = spaces.Box(low=-np.inf, high=np.inf, shape=(2,), dtype=np.float32)
 
         # Physics
         self.k_p, self.k_v = 100, 20  # PD control.z
@@ -257,6 +259,7 @@ class PushTEnv(gym.Env):
         self.n_contact_points = 0
         n_steps = int(1 / (self.dt * self.control_hz))
         self._last_action = action
+        if self.relative: action += self.agent.position
         for _ in range(n_steps):
             # Step PD control
             # self.agent.velocity = self.k_p * (act - self.agent.position)    # P control works too.
