@@ -260,7 +260,7 @@ class PushTEnv(gym.Env):
         return intersection_area / goal_area
 
     def step(self, action):
-        action *= action_scale # lol
+        action *= self.action_scale # lol
         
         self.n_contact_points = 0
         n_steps = int(1 / (self.dt * self.control_hz))
