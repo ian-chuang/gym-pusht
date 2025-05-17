@@ -139,6 +139,7 @@ class PushTEnv(gym.Env):
         obs_type="state",
         render_mode="rgb_array",
         relative=False,
+        legacy=True,
         block_cog=None,
         damping=None,
         observation_width=96,
@@ -150,6 +151,7 @@ class PushTEnv(gym.Env):
         # Observations
         self.obs_type = obs_type
         self.relative = relative
+        self.legacy = legacy
 
         # Rendering
         self.render_mode = render_mode
@@ -487,8 +489,12 @@ class PushTEnv(gym.Env):
         # Setting angle rotates with respect to center of mass, therefore will modify the geometric position if not
         # the same as CoM. Therefore should theoretically set the angle first. But for compatibility with legacy data,
         # we do the opposite.
-        self.block.position = list(state[2:4])
-        self.block.angle = state[4]
+        if self.legacy:
+            self.block.position = list(state[2:4])
+            self.block.angle = state[4]
+        else:
+            self.block.angle = state[4]
+            self.block.position = list(state[2:4])
 
         # Run physics to take effect
         self.space.step(self.dt)
