@@ -140,6 +140,7 @@ class PushTEnv(gym.Env):
         render_mode="rgb_array",
         relative=False,
         legacy=True,
+        action_scale=100,
         block_cog=None,
         damping=None,
         observation_width=96,
@@ -152,6 +153,7 @@ class PushTEnv(gym.Env):
         self.obs_type = obs_type
         self.relative = relative
         self.legacy = legacy
+        self.action_scale = action_scale
 
         # Rendering
         self.render_mode = render_mode
@@ -258,6 +260,8 @@ class PushTEnv(gym.Env):
         return intersection_area / goal_area
 
     def step(self, action):
+        action *= action_scale # lol
+        
         self.n_contact_points = 0
         n_steps = int(1 / (self.dt * self.control_hz))
         self._last_action = action
