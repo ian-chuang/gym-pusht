@@ -426,7 +426,7 @@ class PushTEnv(gym.Env):
                 "pixels": pixels,
                 "agent_pos": np.array(self.agent.position),
             }
-        elif self.obs_type == "visual_proprio":
+        elif self.obs_type == "wmil":
             return {
                 "pixels": pixels,
                 "agent_pos": np.array(
