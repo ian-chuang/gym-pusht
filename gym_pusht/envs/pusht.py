@@ -229,16 +229,16 @@ class PushTEnv(gym.Env):
                     ),
                 }
             )
-        elif self.obs_type == "visual_proprio":
+        elif self.obs_type == "wmil":
             self.observation_space = spaces.Dict(
                 {
-                    "visual": spaces.Box(
+                    "pixels": spaces.Box(
                         low=0,
                         high=255,
                         shape=(self.observation_height, self.observation_width, 3),
                         dtype=np.uint8,
                     ),
-                    "proprio": spaces.Box(
+                    "agent_pos": spaces.Box(
                         low=np.array([0, 0, -np.inf, -np.inf]),
                         high=np.array([512, 512, np.inf, np.inf]),
                         dtype=np.float64,
@@ -428,8 +428,8 @@ class PushTEnv(gym.Env):
             }
         elif self.obs_type == "visual_proprio":
             return {
-                "visual": pixels,
-                "proprio": np.array(
+                "pixels": pixels,
+                "agent_pos": np.array(
                     tuple(self.agent.position)
                     + tuple(self.agent.velocity)
                 )
