@@ -266,6 +266,7 @@ class PushTEnv(gym.Env):
         n_steps = int(1 / (self.dt * self.control_hz))
         self._last_action = action
         if self.relative: action += self.agent.position
+        action = np.clip(action, 0, 512)
         for _ in range(n_steps):
             # Step PD control
             # self.agent.velocity = self.k_p * (act - self.agent.position)    # P control works too.
